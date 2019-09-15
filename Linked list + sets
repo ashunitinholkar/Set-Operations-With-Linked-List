@@ -1,0 +1,363 @@
+                                     //SET OPERATIONS USING LINKED LIST
+
+//ASHWAMEGHA N. HOLKAR
+
+/*Second year Computer Engineering class, set A of students like Vanilla Ice-cream and set B
+of students like butterscotch ice-cream. Write C/C++ program to store two sets using linked
+list. compute and displayi.
+Set of students who like either vanilla or butterscotch or both
+ii. Set of students who like both vanilla and butterscotch
+iii. Set of students who like only vanilla not butterscotch
+iv. Set of students who like only butterscotch not vanilla
+v. Number of students who like neither vanilla nor butterscotch*/
+#include<iostream>
+#include<stdlib.h>
+using namespace std;
+struct Node
+{
+    struct Node*link;
+    int data;
+};
+struct Node*rootv=NULL;
+struct Node*rootb=NULL;
+struct Node*rootu=NULL;
+class Set
+{
+    public:Node *create();
+           void display(struct Node*);
+           int uniList(struct Node*, struct Node*);
+           void both(struct Node*,struct Node*);
+           void vanilla(struct Node*,struct Node*);
+           void butter(struct Node*,struct Node*);
+};
+Node *Set::create()
+{
+    int i,n;
+    struct Node*temp,*p,*rootv;
+    rootv=NULL;
+    cout<<"\nEnter No. of Students:\n";
+    cin>>n;
+    for(i=0;i<n;i++)
+    {
+        struct Node*temp=(struct Node*)malloc(sizeof(struct Node));
+        cout<<"\nEnter Roll No.:\n";
+        cin>>temp->data;
+        temp->link=NULL;
+        if(rootv==NULL)
+        {
+            rootv=temp;
+        }
+        else{
+            p=rootv;
+            while(p->link!=NULL)
+            {
+                p=p->link;
+            }
+            p->link=temp;
+        }
+    }
+    return rootv;
+}
+void Set::display(struct Node*rootv)
+{
+   struct Node*p=new Node;
+   int c=0;
+   p=rootv;
+   while(p!=NULL)
+   {
+       cout<<p->data<<" ";
+       p=p->link;
+       c++;
+   }
+   cout<<"\nTotal No. of Students: "<<c;
+}
+int Set::uniList(struct Node*rootv,struct Node*rootb)
+{
+    int flag=0;
+    int count=0;
+    struct Node*p=new Node;
+    struct Node*temp=new Node;
+    p=rootv;
+    while(p!=NULL)
+    {
+        cout<<p->data<<"  ";
+        p=p->link;
+        count++;
+    }
+    for(temp=rootb;temp->link!=NULL;temp=temp->link)
+    {
+        flag=0;
+        for(p=rootv;p->link!=NULL;p=p->link)
+        {
+            if(temp->data==p->data)
+            {
+                flag=1;
+            }
+        }
+        if(flag!=1)
+        {
+            cout<<temp->data<<"  ";  
+         count++;
+        }
+    }
+    return count;
+}
+void Set::both(struct Node*rootv,struct Node*rootb)
+{
+    struct Node*p,*temp;
+    for(p=rootv;p!=NULL;p=p->link)
+    {
+        for(temp=rootb;temp!=NULL;temp=temp->link)
+        {
+            if(temp->data==p->data)
+            {
+                cout<<p->data<<"  ";
+            }
+        }
+    }
+}
+void Set::vanilla(struct Node*rootv,struct Node*rootb)
+{
+    struct Node*p,*temp;
+    int flag=0;
+    for(p=rootv;p!=NULL;p=p->link)
+    {
+        flag=0;
+        for(temp=rootb;temp!=NULL;temp=temp->link)
+        {
+            if(temp->data==p->data)
+            {
+                flag=1;
+                break;
+            }
+        }
+        if(flag!=1)
+        {
+            cout<<p->data<<"  ";
+        }
+    }
+}
+void Set::butter(struct Node*rootv,struct Node*rootb)
+{
+    struct Node*p,*temp;
+    int flag=0;
+    for(temp=rootb;temp!=NULL;temp=temp->link)
+    {
+        flag=0;
+        for(p=rootv;p!=NULL;p=p->link)
+        {
+            if(temp->data==p->data)
+            {
+                flag=1;
+                break;
+            }
+        }
+        if(flag!=1)
+        {
+            cout<<temp->data<<"  ";
+        }
+    }
+}
+
+int main()
+{
+    int m,count,choice;
+    char ch;
+    struct Node n;
+    Set s;
+    struct Node*rootv,*rootb;
+    rootv=rootb=NULL;
+    do
+ {
+  cout<<"1.Enter Roll No. of student like Ice-Cream\n2.Dispaly \n3.Union Set of Students\n4.Only Vanilla\n5.Only Butterscotch\n6.Intersection Set of Students\n7.Set Neither Likes Any Ice-Cream\n";
+  cout<<"Enter your choice\n";
+  cin>>choice;
+  switch(choice)
+  {
+   case 1 :
+   {
+    cout<<"\nStudent Likes Vanilla Ice-Cream\n";
+    rootv=s.create();
+    cout<<"\nStudent Likes Butterscotch Ice-Cream\n";
+    rootb=s.create();
+    break;
+   }
+   case 2 :
+   {
+    cout<<"\nStudent Likes Vanilla Ice-Cream\n";
+    s.display(rootv);
+    cout<<"\nStudent Likes Butterscotch Ice-Cream\n";
+    s.display(rootb);
+    break;
+   }
+   case 3 :
+   {
+    cout<<"\nStudent Likes Vanilla or Butterscotch or Both\n";
+    count= s.uniList(rootv,rootb);
+    break;
+   }
+   case 6 :
+   {
+    cout<<"\nStudent Likes Both Vanilla and Butterscotch\n";
+    s.both(rootv,rootb);
+    break;
+   }
+   case 4 :
+   {
+    cout<<"\nStudent Likes Only Vanilla\n";
+    s.vanilla(rootv,rootb);
+    break;
+   }
+   case 5 :
+   {
+    cout<<"\nStudent Likes Only Butterscotch\n";
+    s.butter(rootv,rootb);
+    break;
+   }
+   case 7 :
+   {
+    cout<<"\nEnter Number Of Students\n";
+    cin>>m;
+    cout<<"\nNo. of Student Likes Neither Vanilla Nor Butterscotch: "<<m-count<<endl;
+    break;
+   }
+  }
+  cout<<"\nDo Another(y/n)?\n";
+  cin>>ch;
+ }while(ch=='y'||ch=='Y');
+    return 0;
+}
+
+//***********************OUTPUT****************************************************************
+/*
+1.Enter Roll No. of student like Ice-Cream
+2.Dispaly 
+3.Union Set of Students
+4.Only Vanilla
+5.Only Butterscotch
+6.Intersection Set of Students
+7.Set Neither Likes Any Ice-Cream
+Enter your choice
+1
+
+Student Likes Vanilla Ice-Cream
+
+Enter No. of Students:
+3
+
+Enter Roll No.:
+1
+
+Enter Roll No.:
+4
+
+Enter Roll No.:
+6
+
+Student Likes Butterscotch Ice-Cream
+
+Enter No. of Students:
+3
+
+Enter Roll No.:
+2
+
+Enter Roll No.:
+5
+
+Enter Roll No.:
+6
+
+Do Another(y/n)?
+y
+1.Enter Roll No. of student like Ice-Cream
+2.Dispaly 
+3.Union Set of Students
+4.Only Vanilla
+5.Only Butterscotch
+6.Intersection Set of Students
+7.Set Neither Likes Any Ice-Cream
+Enter your choice
+2
+
+Student Likes Vanilla Ice-Cream
+1 4 6 
+Total No. of Students: 3
+Student Likes Butterscotch Ice-Cream
+2 5 6 
+Total No. of Students: 3
+Do Another(y/n)?
+y
+1.Enter Roll No. of student like Ice-Cream
+2.Dispaly 
+3.Union Set of Students
+4.Only Vanilla
+5.Only Butterscotch
+6.Intersection Set of Students
+7.Set Neither Likes Any Ice-Cream
+Enter your choice
+3
+
+Student Likes Vanilla or Butterscotch or Both
+1  4  6  2  5  
+Do Another(y/n)?
+y
+1.Enter Roll No. of student like Ice-Cream
+2.Dispaly 
+3.Union Set of Students
+4.Only Vanilla
+5.Only Butterscotch
+6.Intersection Set of Students
+7.Set Neither Likes Any Ice-Cream
+Enter your choice
+4
+
+Student Likes Only Vanilla
+1  4  
+Do Another(y/n)?
+y
+1.Enter Roll No. of student like Ice-Cream
+2.Dispaly 
+3.Union Set of Students
+4.Only Vanilla
+5.Only Butterscotch
+6.Intersection Set of Students
+7.Set Neither Likes Any Ice-Cream
+Enter your choice
+5
+
+Student Likes Only Butterscotch
+2  5  
+Do Another(y/n)?
+y
+1.Enter Roll No. of student like Ice-Cream
+2.Dispaly 
+3.Union Set of Students
+4.Only Vanilla
+5.Only Butterscotch
+6.Intersection Set of Students
+7.Set Neither Likes Any Ice-Cream
+Enter your choice
+6
+
+Student Likes Both Vanilla and Butterscotch
+6  
+Do Another(y/n)?
+y
+1.Enter Roll No. of student like Ice-Cream
+2.Dispaly 
+3.Union Set of Students
+4.Only Vanilla
+5.Only Butterscotch
+6.Intersection Set of Students
+7.Set Neither Likes Any Ice-Cream
+Enter your choice
+7
+
+Enter Number Of Students
+10
+
+No. of Student Likes Neither Vanilla Nor Butterscotch: 5
+
+Do Another(y/n)?
+n*/
